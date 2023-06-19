@@ -12,7 +12,7 @@ class UsernameScreen extends StatefulWidget {
 }
 
 class _UsernameScreenState extends State<UsernameScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   String _username = '';
 
@@ -20,16 +20,16 @@ class _UsernameScreenState extends State<UsernameScreen> {
   void initState() {
     super.initState();
 
-    _emailController.addListener(() {
+    _usernameController.addListener(() {
       setState(() {
-        _username = _emailController.text;
+        _username = _usernameController.text;
       });
     });
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     super.dispose();
   }
 
@@ -75,7 +75,7 @@ class _UsernameScreenState extends State<UsernameScreen> {
             ),
             Gaps.v16,
             TextField(
-              controller: _emailController,
+              controller: _usernameController,
               autocorrect: false,
               decoration: InputDecoration(
                 hintText: 'Username',
@@ -91,7 +91,10 @@ class _UsernameScreenState extends State<UsernameScreen> {
             Gaps.v28,
             GestureDetector(
                 onTap: _onNextTap,
-                child: FormButton(disabled: _username.isEmpty))
+                child: FormButton(
+                  disabled: _username.isEmpty,
+                  text: 'Next',
+                ))
           ],
         ),
       ),
