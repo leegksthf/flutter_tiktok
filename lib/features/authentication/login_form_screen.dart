@@ -20,12 +20,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const InterestsScreen(),
-          ),
-        );
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InterestsScreen(),
+            ),
+            (route) => false);
       }
     }
   }
@@ -75,8 +75,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
               ),
               Gaps.v28,
               GestureDetector(
-                child: FormButton(disabled: false, text: 'Log in'),
                 onTap: _onSubmitTap,
+                child: const FormButton(disabled: false, text: 'Log in'),
               )
             ]),
           ),

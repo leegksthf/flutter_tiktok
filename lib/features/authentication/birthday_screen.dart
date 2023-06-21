@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
+import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
 class BirthdayScreen extends StatefulWidget {
   const BirthdayScreen({super.key});
@@ -36,14 +37,14 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
 
 // StatefulWidget의 State 안에 있다면 어디서든 context를 사용할 수 있음.
 // StatelessWidget에서처럼 함수 사용할 때 넘겨줄 필요 없음.
-  // void _onNextTap() {
-  //   if (_birthday.isEmpty) return;
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) => const EmailScreen(),
-  //     ),
-  //   );
-  // }
+  void _onNextTap() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => const InterestsScreen(),
+      ),
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +91,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             ),
             Gaps.v28,
             GestureDetector(
-                onTap: () {},
+                onTap: _onNextTap,
                 child: const FormButton(
                   disabled: false,
                   text: 'Next',
