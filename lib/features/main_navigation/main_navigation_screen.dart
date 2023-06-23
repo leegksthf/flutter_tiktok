@@ -73,6 +73,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // 키보드가 나타날 때 기본적으로 scaffold가 body를 조절하게되어 영상이 찌그러지게됨.
+      // 영상이 찌그러지지 않게 하기 위해서 resizeToAvoidBottomInset해줌.
+      resizeToAvoidBottomInset: false,
       // 아래 두 가지 방법은 사용자가 다른 화면으로 갈 때마다 index를 바꾸게 되고
       // 이전 화면은 완전히 없어진다. 그래서 다시 돌아와도 처음부터 화면을 만든다.
       // 한 번에 하나의 화면만 렌더링한다.

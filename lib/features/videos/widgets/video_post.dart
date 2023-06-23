@@ -95,6 +95,7 @@ class _VideoPostState extends State<VideoPost>
     }
     await showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       // 이 모달창의 배경색은 디폴트값인 흰색이었는데, 투명으로 바꿔도 흰색인 이유는 Scaffold의 배경색이 나타난 것임. 따라서 BorderRadius를 Scaffold한테 주면 먹게되는 것
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
@@ -175,39 +176,40 @@ class _VideoPostState extends State<VideoPost>
             ),
           ),
           Positioned(
-              bottom: 20,
-              right: 10,
-              child: Column(
-                children: [
-                  const CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    foregroundImage: NetworkImage(
-                      'https://avatars.githubusercontent.com/u/3612017',
-                    ),
-                    child: Text('니꼬'),
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                const CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                    'https://avatars.githubusercontent.com/u/3612017',
                   ),
-                  Gaps.v24,
-                  const VideoButton(
-                    icon: FontAwesomeIcons.solidHeart,
-                    text: '2.9M',
+                  child: Text('니꼬'),
+                ),
+                Gaps.v24,
+                const VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: '2.9M',
+                ),
+                Gaps.v24,
+                GestureDetector(
+                  onTap: () => _onCommentsTap(context),
+                  child: const VideoButton(
+                    icon: FontAwesomeIcons.solidComment,
+                    text: '33K',
                   ),
-                  Gaps.v24,
-                  GestureDetector(
-                    onTap: () => _onCommentsTap(context),
-                    child: const VideoButton(
-                      icon: FontAwesomeIcons.solidComment,
-                      text: '33K',
-                    ),
-                  ),
-                  Gaps.v24,
-                  const VideoButton(
-                    icon: FontAwesomeIcons.share,
-                    text: 'Share',
-                  ),
-                ],
-              ))
+                ),
+                Gaps.v24,
+                const VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: 'Share',
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
