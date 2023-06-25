@@ -40,17 +40,19 @@ class DiscoverScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(children: [
-          for (String tab in tabs)
-            Center(
-              child: Text(
-                tab,
-                style: TextStyle(
-                  fontSize: Sizes.size16,
+        body: TabBarView(
+          children: [
+            for (String tab in tabs)
+              Center(
+                child: Text(
+                  tab,
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                  ),
                 ),
-              ),
-            )
-        ]),
+              )
+          ],
+        ),
       ),
     );
   }
