@@ -86,7 +86,6 @@ class _UsernameScreenState extends State<UsernameScreen> {
                   borderSide: BorderSide(color: Colors.grey.shade400),
                 ),
               ),
-              cursorColor: Theme.of(context).primaryColor,
             ),
             Gaps.v28,
             GestureDetector(

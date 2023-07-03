@@ -128,7 +128,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     borderSide: BorderSide(color: Colors.grey.shade400),
                   ),
                 ),
-                cursorColor: Theme.of(context).primaryColor,
               ),
               Gaps.v10,
               const Text(
@@ -146,7 +145,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                         : Colors.grey.shade400,
                   ),
                   Gaps.h5,
-                  Text('8 to 20 characters'),
+                  const Text('8 to 20 characters'),
                 ],
               ),
               Gaps.v28,

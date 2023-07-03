@@ -97,7 +97,6 @@ class _EmailScreenState extends State<EmailScreen> {
                     borderSide: BorderSide(color: Colors.grey.shade400),
                   ),
                 ),
-                cursorColor: Theme.of(context).primaryColor,
               ),
               Gaps.v28,
               GestureDetector(

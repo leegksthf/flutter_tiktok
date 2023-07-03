@@ -138,7 +138,6 @@ class _VideoCommentsState extends State<VideoComments> {
                               minLines: null,
                               maxLines: null,
                               textInputAction: TextInputAction.newline,
-                              cursorColor: Theme.of(context).primaryColor,
                               decoration: InputDecoration(
                                 hintText: 'Add comment...',
                                 contentPadding: const EdgeInsets.symmetric(
