@@ -99,7 +99,8 @@ class _VideoPostState extends State<VideoPost>
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      // 이 모달창의 배경색은 디폴트값인 흰색이었는데, 투명으로 바꿔도 흰색인 이유는 Scaffold의 배경색이 나타난 것임. 따라서 BorderRadius를 Scaffold한테 주면 먹게되는 것
+      // 이 모달창의 배경색은 디폴트값인 흰색이었는데, 투명으로 바꿔도 흰색인 이유는 Scaffold의 배경색이 나타난 것임.
+      // 따라서 BorderRadius를 Scaffold한테 주면 먹게되는 것
       backgroundColor: Colors.transparent,
       builder: (context) => const VideoComments(),
     );

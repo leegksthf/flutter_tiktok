@@ -12,7 +12,7 @@ class VideoComments extends StatefulWidget {
 
 class _VideoCommentsState extends State<VideoComments> {
   bool _isWriting = false;
-  late final _scrollController = ScrollController();
+  final TextEditingController _textEditingController = TextEditingController();
 
   void _onClosePressed() {
     Navigator.of(context).pop();
