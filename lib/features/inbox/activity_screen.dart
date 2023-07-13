@@ -10,11 +10,39 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-// simgleTickerProviderStateMixin => 모든 애니메이션 프레임에서 Callback Function을 호출하는 시계같은 것
-// 위젯이 위젯트리에 없을 때 리소스를 낭비하고 있지 않게 하기도함.
+// SimgleTickerProviderStateMixin => 모든 애니메이션 프레임에서 Callback Function을 호출하는 시계같은 것
+// Ticker은 모든 애니메이션프레임마다 실행되기 때문에 리소스 낭비가 심함.
+// SimgleTickerProviderStateMixin은 Ticker를 제공하지만, 위젯이 위젯트리에 없을 때 리소스를 낭비하고 있지 않게 함.
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
   final List<String> _notifications = List.generate(20, (index) => '${index}h');
+  bool _showBarrier = false;
+  final List<Map<String, dynamic>> _tabs = [
+    {
+      "title": "All activity",
+      "icon": FontAwesomeIcons.solidMessage,
+    },
+    {
+      "title": "Likes",
+      "icon": FontAwesomeIcons.solidHeart,
+    },
+    {
+      "title": "Comments",
+      "icon": FontAwesomeIcons.solidComments,
+    },
+    {
+      "title": "Mentions",
+      "icon": FontAwesomeIcons.at,
+    },
+    {
+      "title": "Followers",
+      "icon": FontAwesomeIcons.solidUser,
+    },
+    {
+      "title": "From TikTok",
+      "icon": FontAwesomeIcons.tiktok,
+    }
+  ];
 
   // this나 다른 instance member를 참조하려면 late를 사용해야함.
   // 1. 애니메이션의 정보를 갖고있는 컨트롤러를 생성하고
@@ -24,8 +52,17 @@ class _ActivityScreenState extends State<ActivityScreen>
   );
   // begin, end는 turns값
   // 2. 실제 애니메이션인 Animation을 생성하고
-  late final Animation<double> _animation =
+  late final Animation<double> _arrowAnimation =
       Tween(begin: 0.0, end: 0.5).animate(_animationController);
+
+  late final Animation<Offset> _panelAnimation = Tween(
+    begin: const Offset(0.0, -1),
+    end: Offset.zero,
+  ).animate(_animationController);
+
+  late final Animation<Color?> _barrierAnimation =
+      ColorTween(begin: Colors.transparent, end: Colors.black38)
+          .animate(_animationController);
 
   void onDismissed(notification) {
     _notifications.remove(notification);
@@ -33,12 +70,16 @@ class _ActivityScreenState extends State<ActivityScreen>
   }
 
   // 3. 실행
-  void _onTitleTap() {
+  void toggleAnimations() async {
     if (_animationController.isCompleted) {
-      _animationController.reverse();
+      await _animationController.reverse();
     } else {
       _animationController.forward();
     }
+
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
   }
 
   @override
@@ -46,7 +87,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -55,7 +96,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
               Gaps.h2,
               RotationTransition(
-                turns: _animation,
+                turns: _arrowAnimation,
                 child: const FaIcon(
                   FontAwesomeIcons.chevronDown,
                   size: Sizes.size14,
@@ -164,31 +205,47 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ),
             ],
           ),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(Sizes.size4),
-                bottomRight: Radius.circular(Sizes.size4),
-              ),
+          // slideTransition가 barrier 위에 있어서 listView에만 barrier가 적용됨. 코드 위치로 변경.
+          if (_showBarrier)
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              dismissible: true,
+              onDismiss: toggleAnimations,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                ListTile(
-                  leading: FaIcon(
-                    FontAwesomeIcons.user,
-                    color: Colors.black,
-                    size: Sizes.size16,
-                  ),
-                  title: Text(
-                    'Followers',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-              ],
+          SlideTransition(
+            position: _panelAnimation,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(Sizes.size4),
+                  bottomRight: Radius.circular(Sizes.size4),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final tab in _tabs)
+                    ListTile(
+                      title: Row(
+                        children: [
+                          FaIcon(
+                            tab['icon'],
+                            color: Colors.black,
+                            size: Sizes.size16,
+                          ),
+                          Gaps.h20,
+                          Text(
+                            tab['title'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                ],
+              ),
             ),
           )
         ],
