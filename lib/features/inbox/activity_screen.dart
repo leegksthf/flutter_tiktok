@@ -53,7 +53,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   // begin, end는 turns값
   // 2. 실제 애니메이션인 Animation을 생성하고
   late final Animation<double> _arrowAnimation =
-      Tween(begin: 0.0, end: 0.5).animate(_animationController);
+      Tween(begin: 0.0, end: -0.5).animate(_animationController);
 
   late final Animation<Offset> _panelAnimation = Tween(
     begin: const Offset(0.0, -1),
@@ -89,6 +89,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         title: GestureDetector(
           onTap: toggleAnimations,
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
