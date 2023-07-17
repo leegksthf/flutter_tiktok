@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -30,22 +31,27 @@ class _VideoPostState extends State<VideoPost>
   late final AnimationController _animationController;
 
   bool _isPaused = false;
+  bool _isMuted = false;
   final _animationDuration = const Duration(milliseconds: 200);
 
-  // void _onVideoChange() {
-  //   if (_videoPlayerController.value.isInitialized) {
-  //     if (_videoPlayerController.value.duration ==
-  //         _videoPlayerController.value.position) {
-  //       widget.onVideoFinished();
-  //     }
-  //   }
-  // }
+  void _onVideoChange() {
+    if (_videoPlayerController.value.isInitialized) {
+      if (_videoPlayerController.value.duration ==
+          _videoPlayerController.value.position) {
+        widget.onVideoFinished();
+      }
+    }
+  }
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
-    setState(() {});
     await _videoPlayerController.setLooping(true);
-    // _videoPlayerController.addListener(_onVideoChange);
+    _videoPlayerController.addListener(_onVideoChange);
+    if (kIsWeb) {
+      _isMuted = true;
+      await _videoPlayerController.setVolume(0);
+    }
+    setState(() {});
   }
 
   @override
@@ -69,6 +75,7 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
+    if (!mounted) return;
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
@@ -105,6 +112,15 @@ class _VideoPostState extends State<VideoPost>
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
+  }
+
+  void _onToggleMutedButton() {
+    _isMuted = !_isMuted;
+    if (_isMuted) {
+      _videoPlayerController.setVolume(1.0);
+    } else {
+      _videoPlayerController.setVolume(0.0);
+    }
   }
 
   @override
@@ -184,6 +200,21 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
+                IconButton(
+                  onPressed: _onToggleMutedButton,
+                  icon: _isMuted
+                      ? const FaIcon(
+                          FontAwesomeIcons.earListen,
+                          color: Colors.white,
+                          size: Sizes.size40,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.earDeaf,
+                          color: Colors.white,
+                          size: Sizes.size40,
+                        ),
+                ),
+                Gaps.v24,
                 const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
