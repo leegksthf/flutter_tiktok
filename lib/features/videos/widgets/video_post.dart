@@ -46,11 +46,11 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
-    _videoPlayerController.addListener(_onVideoChange);
     if (kIsWeb) {
       _isMuted = true;
       await _videoPlayerController.setVolume(0);
     }
+    _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
   }
 
@@ -170,12 +170,12 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             bottom: 20,
             left: 10,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   '@니꼬',
                   style: TextStyle(

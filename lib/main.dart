@@ -11,7 +11,9 @@ void main() async {
   ]);
 
   // 상단바 색깔
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark,
+  );
 
   runApp(const TikTokApp());
 }
@@ -43,9 +45,7 @@ class TikTokApp extends StatelessWidget {
                 fontWeight: FontWeight.w600),
           ),
         ),
-        home: const MainNavigationScreen()
-        // SignUpScreen(),
-        );
+        home: const MainNavigationScreen());
   }
 }
 

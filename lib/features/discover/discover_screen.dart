@@ -65,45 +65,50 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           elevation: 1,
           // leading: const Icon(FontAwesomeIcons.chevronLeft),
           // actions: const [Icon(FontAwesomeIcons.barsProgress)],
-          title: SizedBox(
-            height: 44,
-            child: TextField(
-              controller: _textEditingController,
-              onTap: _onStartWriting,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                prefixIcon: const Icon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  color: Colors.black,
-                  size: Sizes.size20,
-                ),
-                prefixIconConstraints: const BoxConstraints(minWidth: 40),
-                suffixIcon: GestureDetector(
-                  onTap: _clearWriting,
-                  child: Icon(
-                    FontAwesomeIcons.solidCircleXmark,
-                    color: Colors.grey.shade600,
+          title: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: Breakpoints.sm,
+            ),
+            child: SizedBox(
+              height: 44,
+              child: TextField(
+                controller: _textEditingController,
+                onTap: _onStartWriting,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                  prefixIcon: const Icon(
+                    FontAwesomeIcons.magnifyingGlass,
+                    color: Colors.black,
                     size: Sizes.size20,
                   ),
-                ),
-                suffixIconConstraints: const BoxConstraints(
-                  minWidth: 40,
-                ),
-                hintText: 'Search',
-                filled: true,
-                fillColor: Colors.grey.shade200,
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(Sizes.size12),
-                ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(Sizes.size12),
+                  prefixIconConstraints: const BoxConstraints(minWidth: 40),
+                  suffixIcon: GestureDetector(
+                    onTap: _clearWriting,
+                    child: Icon(
+                      FontAwesomeIcons.solidCircleXmark,
+                      color: Colors.grey.shade600,
+                      size: Sizes.size20,
+                    ),
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
+                    minWidth: 40,
+                  ),
+                  hintText: 'Search',
+                  filled: true,
+                  fillColor: Colors.grey.shade200,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(Sizes.size12),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(Sizes.size12),
+                  ),
                 ),
               ),
             ),
           ),
-          // CupertinoSearchTextField(
+          // == CupertinoSearchTextField(
           //   prefixIcon: const Icon(
           //     CupertinoIcons.search,
           //     color: Colors.black,
@@ -172,7 +177,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         ),
                       ),
                       Gaps.v8,
-                      if (constraints.maxWidth < 200 ||
+                      if (constraints.maxWidth < 195 ||
                           constraints.maxWidth > 250)
                         DefaultTextStyle(
                           style: TextStyle(
