@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class PostVideoButton extends StatelessWidget {
   const PostVideoButton({
@@ -59,7 +60,8 @@ class PostVideoButton extends StatelessWidget {
             horizontal: Sizes.size12,
           ),
           decoration: BoxDecoration(
-            color: inverted ? Colors.black : Colors.white,
+            color:
+                !inverted || isDarkMode(context) ? Colors.white : Colors.black,
             borderRadius: BorderRadius.circular(
               Sizes.size6,
             ),
@@ -67,7 +69,9 @@ class PostVideoButton extends StatelessWidget {
           child: Center(
             child: FaIcon(
               FontAwesomeIcons.plus,
-              color: inverted ? Colors.white : Colors.black,
+              color: !inverted || isDarkMode(context)
+                  ? Colors.black
+                  : Colors.white,
               size: Sizes.size16 + Sizes.size2,
             ),
           ),

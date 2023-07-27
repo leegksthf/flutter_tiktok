@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
@@ -61,91 +59,95 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: min(Breakpoints.lg, width),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Sizes.size52,
-                              vertical: Sizes.size24,
+                        Flexible(
+                          child: Container(
+                            width: double.infinity,
+                            constraints: const BoxConstraints(
+                              // maxWidth: min(Breakpoints.lg, width), // ConstrainedBox 사용 할 때는 이 속성 사용해주면 됨.
+                              maxWidth: Breakpoints.lg,
                             ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const CircleAvatar(
-                                  radius: 80,
-                                  foregroundImage:
-                                      AssetImage('assets/images/dami2.jpeg'),
-                                  child: Text(
-                                    '다미',
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: Sizes.size52,
+                                vertical: Sizes.size24,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CircleAvatar(
+                                    radius: 80,
+                                    foregroundImage:
+                                        AssetImage('assets/images/dami2.jpeg'),
+                                    child: Text(
+                                      '다미',
+                                    ),
                                   ),
-                                ),
-                                Gaps.h60,
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            '@hansol',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: Sizes.size18,
+                                  Gaps.h60,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              '@hansol',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: Sizes.size18,
+                                              ),
                                             ),
-                                          ),
-                                          Gaps.h5,
-                                          FaIcon(
-                                            FontAwesomeIcons.solidCircleCheck,
-                                            size: Sizes.size16,
-                                            color: Colors.blue.shade500,
-                                          ),
-                                        ],
-                                      ),
-                                      Gaps.v16,
-                                      const SizedBox(
-                                        height: Sizes.size52,
-                                        child: ProfileInfo(),
-                                      ),
-                                      Gaps.v10,
-                                      const SizedBox(
-                                        height: Sizes.size52,
-                                        width: 280,
-                                        child: ButtonList(),
-                                      ),
-                                      Gaps.v20,
-                                      const Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              '안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,,안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,',
+                                            Gaps.h5,
+                                            FaIcon(
+                                              FontAwesomeIcons.solidCircleCheck,
+                                              size: Sizes.size16,
+                                              color: Colors.blue.shade500,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Gaps.v10,
-                                      const Row(
-                                        children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.link,
-                                            size: Sizes.size12,
-                                          ),
-                                          Gaps.h4,
-                                          Text(
-                                            'https://github.com/leegksthf',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
+                                          ],
+                                        ),
+                                        Gaps.v16,
+                                        const SizedBox(
+                                          height: Sizes.size52,
+                                          child: ProfileInfo(),
+                                        ),
+                                        Gaps.v10,
+                                        const SizedBox(
+                                          height: Sizes.size52,
+                                          width: 280,
+                                          child: ButtonList(),
+                                        ),
+                                        Gaps.v20,
+                                        Row(
+                                          children: const [
+                                            Expanded(
+                                              child: Text(
+                                                '안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,,안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,',
+                                              ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                        Gaps.v10,
+                                        Row(
+                                          children: const [
+                                            FaIcon(
+                                              FontAwesomeIcons.link,
+                                              size: Sizes.size12,
+                                            ),
+                                            Gaps.h4,
+                                            Text(
+                                              'https://github.com/leegksthf',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Gaps.v20,
-                              ],
+                                  Gaps.v20,
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -191,9 +193,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                           Gaps.v14,
                           Gaps.v14,
-                          const Column(
+                          Column(
                             children: [
-                              Padding(
+                              const Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: Sizes.size32,
                                 ),
@@ -205,7 +207,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               Gaps.v14,
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: const [
                                   FaIcon(
                                     FontAwesomeIcons.link,
                                     size: Sizes.size12,
@@ -251,10 +253,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               image:
                                   "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
                             ),
-                            const Positioned(
+                            Positioned(
                               bottom: 0,
                               child: Row(
-                                children: [
+                                children: const [
                                   Icon(
                                     Icons.play_arrow_outlined,
                                     size: Sizes.size32,
@@ -276,8 +278,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                   ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: width > Breakpoints.lg ? 5 : 3,
                     crossAxisSpacing: Sizes.size2,
                     mainAxisSpacing: Sizes.size2,
                     childAspectRatio: 9 / 14,

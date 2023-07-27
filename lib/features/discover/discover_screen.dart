@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 final tabs = [
   'Top',
@@ -70,43 +72,50 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               maxWidth: Breakpoints.sm,
             ),
             child: SizedBox(
-              height: 44,
-              child: TextField(
-                controller: _textEditingController,
-                onTap: _onStartWriting,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                  prefixIcon: const Icon(
-                    FontAwesomeIcons.magnifyingGlass,
-                    color: Colors.black,
-                    size: Sizes.size20,
+                height: 44,
+                child: CupertinoSearchTextField(
+                  controller: _textEditingController,
+                  onTap: _onStartWriting,
+                  style: TextStyle(
+                    color: isDarkMode(context) ? Colors.white : Colors.black,
                   ),
-                  prefixIconConstraints: const BoxConstraints(minWidth: 40),
-                  suffixIcon: GestureDetector(
-                    onTap: _clearWriting,
-                    child: Icon(
-                      FontAwesomeIcons.solidCircleXmark,
-                      color: Colors.grey.shade600,
-                      size: Sizes.size20,
-                    ),
-                  ),
-                  suffixIconConstraints: const BoxConstraints(
-                    minWidth: 40,
-                  ),
-                  hintText: 'Search',
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(Sizes.size12),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(Sizes.size12),
-                  ),
+                )
+                // TextField(
+                //   controller: _textEditingController,
+                //   onTap: _onStartWriting,
+                //   decoration: InputDecoration(
+                //     contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                //     prefixIcon: const Icon(
+                //       FontAwesomeIcons.magnifyingGlass,
+                //       color: Colors.black,
+                //       size: Sizes.size20,
+                //     ),
+                //     prefixIconConstraints: const BoxConstraints(minWidth: 40),
+                //     suffixIcon: GestureDetector(
+                //       onTap: _clearWriting,
+                //       child: Icon(
+                //         FontAwesomeIcons.solidCircleXmark,
+                //         color: Colors.grey.shade600,
+                //         size: Sizes.size20,
+                //       ),
+                //     ),
+                //     suffixIconConstraints: const BoxConstraints(
+                //       minWidth: 40,
+                //     ),
+                //     hintText: 'Search',
+                //     filled: true,
+                //     fillColor: Colors.grey.shade200,
+                //     focusedBorder: OutlineInputBorder(
+                //       borderSide: BorderSide.none,
+                //       borderRadius: BorderRadius.circular(Sizes.size12),
+                //     ),
+                //     border: OutlineInputBorder(
+                //       borderSide: BorderSide.none,
+                //       borderRadius: BorderRadius.circular(Sizes.size12),
+                //     ),
+                //   ),
+                // ),
                 ),
-              ),
-            ),
           ),
           // == CupertinoSearchTextField(
           //   prefixIcon: const Icon(
@@ -129,8 +138,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               fontWeight: FontWeight.w600,
               fontSize: Sizes.size16,
             ),
-            indicatorColor: Colors.black,
-            labelColor: Colors.black,
+            indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
             unselectedLabelColor: Colors.grey.shade500,
             tabs: [
               for (String tab in tabs)
@@ -177,42 +185,44 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                         ),
                       ),
                       Gaps.v8,
-                      if (constraints.maxWidth < 195 ||
-                          constraints.maxWidth > 250)
-                        DefaultTextStyle(
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          child: Row(
-                            children: [
-                              const CircleAvatar(
-                                radius: 12,
-                                backgroundImage: AssetImage(
-                                  'assets/images/dami5.jpeg',
-                                ),
+                      // if (constraints.maxWidth < 200 ||
+                      //     constraints.maxWidth > 250)
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          color: isDarkMode(context)
+                              ? Colors.grey.shade300
+                              : Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 12,
+                              backgroundImage: AssetImage(
+                                'assets/images/dami5.jpeg',
                               ),
-                              Gaps.h4,
-                              const Expanded(
-                                child: Text(
-                                  'My avatar is going to be very long',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                            ),
+                            Gaps.h4,
+                            const Expanded(
+                              child: Text(
+                                'My avatar is going to be very long',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              Gaps.h4,
-                              FaIcon(
-                                FontAwesomeIcons.heart,
-                                size: Sizes.size16,
-                                color: Colors.grey.shade600,
-                              ),
-                              Gaps.h2,
-                              const Text(
-                                '2.5M',
-                              ),
-                            ],
-                          ),
-                        )
+                            ),
+                            Gaps.h4,
+                            FaIcon(
+                              FontAwesomeIcons.heart,
+                              size: Sizes.size16,
+                              color: Colors.grey.shade600,
+                            ),
+                            Gaps.h2,
+                            const Text(
+                              '2.5M',
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

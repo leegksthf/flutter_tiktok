@@ -170,12 +170,12 @@ class _VideoPostState extends State<VideoPost>
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 20,
             left: 10,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Text(
                   '@니꼬',
                   style: TextStyle(

@@ -28,6 +28,9 @@ class TikTokApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          brightness: Brightness.light,
+          // font와 color만 지정해주고, size나 weight등의 속성은 지정해주지 않음.
+          textTheme: Typography.blackMountainView,
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           primaryColor: const Color(0xFFE9435A),
@@ -44,7 +47,34 @@ class TikTokApp extends StatelessWidget {
                 fontSize: Sizes.size16 + Sizes.size2,
                 fontWeight: FontWeight.w600),
           ),
+          tabBarTheme: TabBarTheme(
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey.shade500,
+            indicatorColor: Colors.black,
+          ),
         ),
+        darkTheme: ThemeData(
+            textTheme: Typography.whiteMountainView,
+            // GoogleFonts.notoSansTextTheme(
+            //   ThemeData(brightness: Brightness.dark).textTheme,
+            // ),
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: Colors.black,
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Color(0xFFE9435A),
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: Colors.grey.shade900,
+            ),
+            bottomAppBarTheme: BottomAppBarTheme(
+              color: Colors.grey.shade900,
+            ),
+            primaryColor: const Color(
+              0xFFE9435A,
+            ),
+            tabBarTheme: const TabBarTheme(
+              indicatorColor: Colors.white,
+            )),
         home: const MainNavigationScreen());
   }
 }
