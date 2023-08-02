@@ -11,28 +11,28 @@ class ButtonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.size14,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(
-                  Sizes.size4,
-                ),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: Sizes.size16,
+            horizontal: Sizes.size64,
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(
+                Sizes.size4,
               ),
             ),
-            child: const Text(
-              'Follow',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
+          ),
+          child: const Text(
+            'Follow',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
         Gaps.h4,

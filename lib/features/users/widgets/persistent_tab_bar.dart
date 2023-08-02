@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class PersistentTabBar extends SliverPersistentHeaderDelegate {
   @override
@@ -11,27 +12,28 @@ class PersistentTabBar extends SliverPersistentHeaderDelegate {
         top: Sizes.size10,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).appBarTheme.backgroundColor,
         border: Border.symmetric(
           horizontal: BorderSide(
-            color: Colors.grey.shade200,
+            color: isDarkMode(context)
+                ? Colors.grey.shade700
+                : Colors.grey.shade200,
           ),
         ),
       ),
-      child: const TabBar(
+      child: TabBar(
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorColor: Colors.black,
-        labelPadding: EdgeInsets.only(
+        indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
+        labelPadding: const EdgeInsets.only(
           bottom: Sizes.size10,
         ),
-        tabs: [
+        tabs: const [
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: Sizes.size20,
             ),
             child: Icon(
               Icons.grid_4x4_outlined,
-              color: Colors.black,
             ),
           ),
           Padding(
@@ -40,7 +42,6 @@ class PersistentTabBar extends SliverPersistentHeaderDelegate {
             ),
             child: FaIcon(
               FontAwesomeIcons.heart,
-              color: Colors.black,
             ),
           ),
         ],
@@ -56,6 +57,6 @@ class PersistentTabBar extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/utils.dart';
 
 class VideoComments extends StatefulWidget {
   const VideoComments({super.key});
@@ -41,9 +42,9 @@ class _VideoCommentsState extends State<VideoComments> {
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(Sizes.size14)),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: isDarkMode(context) ? null : Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.grey.shade50,
+          backgroundColor: isDarkMode(context) ? null : Colors.grey.shade50,
           automaticallyImplyLeading: false,
           title: const Text('22796 comments'),
           actions: [
@@ -69,9 +70,11 @@ class _VideoCommentsState extends State<VideoComments> {
                 itemBuilder: (context, index) => Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 18,
-                      child: Text('한솔'),
+                      backgroundColor:
+                          isDarkMode(context) ? Colors.grey.shade500 : null,
+                      child: const Text('한솔'),
                     ),
                     Gaps.h10,
                     Expanded(
@@ -178,7 +181,9 @@ class _VideoCommentsState extends State<VideoComments> {
                                   ),
                                 ),
                                 filled: true,
-                                fillColor: Colors.grey.shade200,
+                                fillColor: isDarkMode(context)
+                                    ? Colors.grey.shade800
+                                    : Colors.grey.shade200,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(
                                     Sizes.size12,
