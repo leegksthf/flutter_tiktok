@@ -48,37 +48,45 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
           ),
           child: Form(
             key: _formKey,
-            child: Column(children: [
-              Gaps.v28,
-              TextFormField(
-                decoration: const InputDecoration(hintText: 'Email'),
-                validator: (value) {
-                  return 'I dont like your email';
-                },
-                onSaved: (newValue) {
-                  if (newValue != null) {
-                    formData['email'] = newValue;
-                  }
-                },
-              ),
-              Gaps.v16,
-              TextFormField(
-                decoration: const InputDecoration(hintText: 'Password'),
-                validator: (value) {
-                  return 'wrong password';
-                },
-                onSaved: (newValue) {
-                  if (newValue != null) {
-                    formData['password'] = newValue;
-                  }
-                },
-              ),
-              Gaps.v28,
-              GestureDetector(
-                onTap: _onSubmitTap,
-                child: const FormButton(disabled: false, text: 'Log in'),
-              )
-            ]),
+            child: Column(
+              children: [
+                Gaps.v28,
+                TextFormField(
+                  decoration: const InputDecoration(hintText: 'Email'),
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return 'I dont like your email';
+                    }
+                    return null;
+                  },
+                  onSaved: (newValue) {
+                    if (newValue != null) {
+                      formData['email'] = newValue;
+                    }
+                  },
+                ),
+                Gaps.v16,
+                TextFormField(
+                  decoration: const InputDecoration(hintText: 'Password'),
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return "Plase write your password";
+                    }
+                    return null;
+                  },
+                  onSaved: (newValue) {
+                    if (newValue != null) {
+                      formData['password'] = newValue;
+                    }
+                  },
+                ),
+                Gaps.v28,
+                GestureDetector(
+                  onTap: _onSubmitTap,
+                  child: const FormButton(disabled: false, text: 'Log in'),
+                )
+              ],
+            ),
           ),
         ),
       ),

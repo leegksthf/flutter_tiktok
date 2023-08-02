@@ -64,11 +64,9 @@ class _InterestsScreenState extends State<InterestsScreen> {
       });
     } else {
       // if (!_showTitle) return;
-      setState(
-        () {
-          _showTitle = false;
-        },
-      );
+      setState(() {
+        _showTitle = false;
+      });
     }
   }
 
@@ -78,33 +76,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      // RenderBox는 위젯의 크기 및 위치 정보를 제공하는 Flutter의 렌더링 개체.
-      final RenderBox renderBox =
-          // findRenderObject는 주어진 'BuildContext'에서 실제로 렌더링되는 위젯의 렌더링 객체를 찾아 반환함.
-          // as RenderBox는 앞에 적인 데이터를 RenderBox 타입으로 변환시키는 명령어(형변환)
-          _showTitleTargetKey.currentContext!.findRenderObject()! as RenderBox;
-      // localToGlobal은 Offset.zero 즉, 로컬 위치(위젯의 최상단)을 기준으로 전역 위치를 구하는 방식.
-      // 이를 통해 앱 바와 대상 위젯 사이의 상대적인 위치를 구할 수 있음.
-      final targetPosition = renderBox.localToGlobal(Offset.zero);
-      final appBarSize =
-          (_appBarKey.currentContext!.findRenderObject()! as RenderBox)
-              .size
-              .height;
-      //대상 위젯과 앱 바 사이의 상대적인 위치를 계산하여 position 변수에 할당.
-      final position = targetPosition.dy - appBarSize;
-
-      if (position < 0) {
-        if (_showTitle) return;
-        setState(() {
-          _showTitle = true;
-        });
-      } else {
-        setState(() {
-          _showTitle = false;
-        });
-      }
-    });
+    _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -174,34 +146,31 @@ class _InterestsScreenState extends State<InterestsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 2,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            bottom: Sizes.size40,
-            top: Sizes.size16,
-            left: Sizes.size24,
-            right: Sizes.size24,
-          ),
-          // CupertinoButton(
-          //  onPressed: (){},
-          //  child: Text('Next),
-          //  color: Theme.of(context).primaryColor
-          // )
-          child: GestureDetector(
-            onTap: onNextTap,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: const Text(
-                'Next',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: Sizes.size16,
-                ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(
+          bottom: Sizes.size40,
+          top: Sizes.size16,
+          left: Sizes.size24,
+          right: Sizes.size24,
+        ),
+        // CupertinoButton(
+        //  onPressed: (){},
+        //  child: Text('Next),
+        //  color: Theme.of(context).primaryColor
+        // )
+        child: GestureDetector(
+          onTap: onNextTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
+            child: const Text(
+              'Next',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: Sizes.size16,
               ),
             ),
           ),
