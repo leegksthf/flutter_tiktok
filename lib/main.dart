@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
 
@@ -24,9 +25,20 @@ class TikTokApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // flexColorScheme 패키지로 편하게 설정할 수 있음.
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ko'),
+        Locale('es'),
+      ],
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
@@ -50,6 +62,7 @@ class TikTokApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+
         tabBarTheme: TabBarTheme(
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey.shade500,
@@ -79,6 +92,12 @@ class TikTokApp extends StatelessWidget {
             fontSize: Sizes.size16 + Sizes.size2,
             fontWeight: FontWeight.w600,
           ),
+          actionsIconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.grey.shade100,
+          ),
         ),
         bottomAppBarTheme: BottomAppBarTheme(
           color: Colors.grey.shade900,
@@ -86,9 +105,10 @@ class TikTokApp extends StatelessWidget {
         primaryColor: const Color(
           0xFFE9435A,
         ),
-        tabBarTheme: const TabBarTheme(
+        tabBarTheme: TabBarTheme(
           labelColor: Colors.white,
           indicatorColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade700,
         ),
       ),
       home: const SignUpScreen(),

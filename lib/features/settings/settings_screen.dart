@@ -67,16 +67,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ListTile(
                 onTap: () async {
+                  if (!mounted) return;
                   final date = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1980),
                     lastDate: DateTime(2030),
                   );
+                  if (!mounted) return;
                   final time = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
                   );
+                  if (!mounted) return;
                   final booking = await showDateRangePicker(
                     context: context,
                     firstDate: DateTime(1980),
