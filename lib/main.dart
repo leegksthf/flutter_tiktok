@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,11 +26,13 @@ class TikTokApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    S.load(const Locale('en'));
     // flexColorScheme 패키지로 편하게 설정할 수 있음.
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       localizationsDelegates: const [
+        S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -37,7 +40,6 @@ class TikTokApp extends StatelessWidget {
       supportedLocales: const [
         Locale('en'),
         Locale('ko'),
-        Locale('es'),
       ],
       theme: ThemeData(
         useMaterial3: true,

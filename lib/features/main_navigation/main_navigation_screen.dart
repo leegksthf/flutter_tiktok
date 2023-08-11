@@ -20,7 +20,7 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen>
     with TickerProviderStateMixin {
   late final AnimationController _iconAnimationController;
-  int _selectedIndex = 4;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
