@@ -23,17 +23,21 @@ class SignUpScreen extends StatelessWidget {
         pageBuilder: (context, animation, secondaryAnimation) =>
             const UsernameScreen(),
         transitionDuration: const Duration(seconds: 1),
+        reverseTransitionDuration: const Duration(seconds: 1),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final offsetAnimation =
               Tween(begin: const Offset(0, -1), end: Offset.zero)
                   .animate(animation);
+          final opacityAnimation = Tween(
+            begin: 0.5,
+            end: 1.0,
+          ).animate(animation);
           return SlideTransition(
-            position: offsetAnimation,
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
+              position: offsetAnimation,
+              child: FadeTransition(
+                opacity: opacityAnimation,
+                child: child,
+              ));
         },
       ),
     );
