@@ -9,7 +9,14 @@ import 'package:tiktok_clone/features/users/widgets/persistent_tab_bar.dart';
 import 'package:tiktok_clone/features/users/widgets/profile_info.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String username;
+  final String tab;
+
+  const UserProfileScreen({
+    super.key,
+    required this.username,
+    required this.tab,
+  });
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -33,6 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: SafeArea(
         child: DefaultTabController(
+          initialIndex: widget.tab == 'likes' ? 1 : 0,
           length: 2,
           // 그냥 CustomScrollView를 사용했을 때는 Sliver와 ScrollView가 합쳐졌을 때 비정상적인 scroll 작동이 됨.
           // CustomScrollView는 내부에 Sliver 위젯만 가능.
@@ -42,7 +50,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
                 elevation: 1,
-                title: const Text('한솔'),
+                title: Text(widget.username),
                 actions: [
                   IconButton(
                     onPressed: () {},
@@ -92,9 +100,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         children: [
                                           Row(
                                             children: [
-                                              const Text(
-                                                '@hansol',
-                                                style: TextStyle(
+                                              Text(
+                                                '@${widget.username}',
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: Sizes.size18,
                                                 ),
@@ -114,16 +122,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             child: ProfileInfo(),
                                           ),
                                           Gaps.v10,
-                                          Row(
+                                          const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
-                                            children: const [
+                                            children: [
                                               ButtonList(),
                                             ],
                                           ),
                                           Gaps.v20,
-                                          Row(
-                                            children: const [
+                                          const Row(
+                                            children: [
                                               Expanded(
                                                 child: Text(
                                                   '안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,,안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,안녕하세요. 틱톨앱 클론코딩 중이에요. 플러터 재밌서요,, 재밌서요,,',
@@ -132,8 +140,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             ],
                                           ),
                                           Gaps.v10,
-                                          Row(
-                                            children: const [
+                                          const Row(
+                                            children: [
                                               FaIcon(
                                                 FontAwesomeIcons.link,
                                                 size: Sizes.size12,
@@ -200,9 +208,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Gaps.v8,
                             const ButtonList(),
                             Gaps.v14,
-                            Column(
+                            const Column(
                               children: [
-                                const Padding(
+                                Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: Sizes.size32,
                                   ),
@@ -214,7 +222,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 Gaps.v14,
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     FaIcon(
                                       FontAwesomeIcons.link,
                                       size: Sizes.size12,
@@ -260,10 +268,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 image:
                                     "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
                               ),
-                              Positioned(
+                              const Positioned(
                                 bottom: 0,
                                 child: Row(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.play_arrow_outlined,
                                       size: Sizes.size32,

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  const UserProfileScreen(
+      {super.key, required String username, required String tab});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
