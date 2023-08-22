@@ -1,9 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:tiktok_clone/features/authentication/email_screen.dart';
-import 'package:tiktok_clone/features/authentication/login_screen.dart';
-import 'package:tiktok_clone/features/authentication/sign_up_screen.dart';
-import 'package:tiktok_clone/features/authentication/username_screen.dart';
-import 'package:tiktok_clone/features/users/custom_scroll_view_example.dart';
 import 'package:tiktok_clone/features/videos/video_recording_screen.dart';
 
 final router = GoRouter(

@@ -10,7 +10,8 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/utils.dart';
 
 class SignUpScreen extends StatelessWidget {
-  static String routeName = '/';
+  static String routeName = 'signUp';
+  static String routeURL = '/';
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) {
@@ -18,7 +19,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   void _onEmailTap(BuildContext context) {
-    context.push(UsernameScreen.routeName);
+    context.pushNamed(UsernameScreen.routeName);
     //
     // 쿼리파라미터 사용
     // context.push('/user/lynn?show=likes');
