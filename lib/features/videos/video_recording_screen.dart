@@ -13,17 +13,16 @@ class VideoRecordingScreen extends StatefulWidget {
 
 class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   bool _hasPermission = false;
-  late final CameraController _cameraController;
+  // final bool _isInitialized = false;
+  bool _isSelfieMode = false;
+
+  late CameraController _cameraController;
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
-
-    if (cameras.isEmpty) {
-      return;
-    }
-
+    if (cameras.isEmpty) return;
     _cameraController = CameraController(
-      cameras[0],
+      cameras[_isSelfieMode ? 1 : 0],
       ResolutionPreset.ultraHigh,
     );
 
@@ -32,19 +31,24 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
 
   Future<void> initPermissions() async {
     final cameraPermission = await Permission.camera.request();
-    final micPermission = await Permission.microphone.request();
+    final microphonePermission = await Permission.microphone.request();
 
     final cameraDenied =
         cameraPermission.isDenied || cameraPermission.isPermanentlyDenied;
+    final microphoneDenied = microphonePermission.isDenied ||
+        microphonePermission.isPermanentlyDenied;
 
-    final micDenied =
-        micPermission.isDenied || micPermission.isPermanentlyDenied;
-
-    if (!cameraDenied && !micDenied) {
+    if (!cameraDenied && !microphoneDenied) {
       _hasPermission = true;
       await initCamera();
       setState(() {});
     }
+  }
+
+  Future<void> _toggleSelfieMode() async {
+    _isSelfieMode = !_isSelfieMode;
+    await initCamera();
+    setState(() {});
   }
 
   @override
@@ -56,25 +60,44 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        body: !_hasPermission || !_cameraController.value.isInitialized
-            ? SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Initializing...',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: Sizes.size20,
-                        ),
-                      ),
-                      Gaps.v20,
-                      CircularProgressIndicator.adaptive()
-                    ]),
+      backgroundColor: Colors.black,
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: !_hasPermission || !_cameraController.value.isInitialized
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Initializing...',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Sizes.size20,
+                    ),
+                  ),
+                  Gaps.v28,
+                  CircularProgressIndicator.adaptive()
+                ],
               )
-            : CameraPreview(_cameraController));
+            : Stack(
+                alignment: Alignment.center,
+                children: [
+                  CameraPreview(
+                    _cameraController,
+                  ),
+                  Positioned(
+                      top: Sizes.size40,
+                      left: Sizes.size10,
+                      child: IconButton(
+                        color: Colors.white,
+                        onPressed: _toggleSelfieMode,
+                        icon: const Icon(
+                          Icons.cameraswitch,
+                        ),
+                      ))
+                ],
+              ),
+      ),
+    );
   }
 }
