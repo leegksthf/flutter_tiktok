@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -107,6 +109,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
+  Future<void> _onPickVideoPressed() async {
+    final video = await ImagePicker().pickVideo(
+      source: ImageSource.gallery,
+    );
+    if (video == null) return;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -202,35 +211,56 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     ),
                   ),
                   Positioned(
+                    width: MediaQuery.of(context).size.width,
                     bottom: Sizes.size40,
-                    child: GestureDetector(
-                      onLongPress: _startRecording,
-                      onLongPressEnd: (details) => _stopRecording(),
-                      child: ScaleTransition(
-                        scale: _buttonAnimation,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              width: Sizes.size80 + Sizes.size5,
-                              height: Sizes.size80 + Sizes.size5,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: Sizes.size6,
-                                value: _progressAnimationController.value,
-                              ),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        GestureDetector(
+                          onLongPress: _startRecording,
+                          onLongPressEnd: (details) => _stopRecording(),
+                          child: ScaleTransition(
+                            scale: _buttonAnimation,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  width: Sizes.size80 + Sizes.size5,
+                                  height: Sizes.size80 + Sizes.size5,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: Sizes.size6,
+                                    value: _progressAnimationController.value,
+                                  ),
+                                ),
+                                Container(
+                                  width: Sizes.size80,
+                                  height: Sizes.size80,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.red.shade500,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Container(
-                              width: Sizes.size80,
-                              height: Sizes.size80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.red.shade500,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              right: Sizes.size10,
+                            ),
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: _onPickVideoPressed,
+                              icon: const FaIcon(
+                                FontAwesomeIcons.image,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
