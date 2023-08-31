@@ -8,10 +8,12 @@ import 'package:video_player/video_player.dart';
 
 class VideoPreviewScreen extends StatefulWidget {
   final XFile video;
+  final bool isPicked;
 
   const VideoPreviewScreen({
     super.key,
     required this.video,
+    required this.isPicked,
   });
 
   @override
@@ -39,7 +41,7 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
 
     await GallerySaver.saveVideo(
       widget.video.path,
-      albumName: 'tiktok clone!',
+      albumName: 'tiktok Clone!',
     );
 
     _savedVideo = true;
@@ -54,18 +56,27 @@ class _VideoPreviewScreenState extends State<VideoPreviewScreen> {
   }
 
   @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Preview Video'),
         actions: [
-          IconButton(
-            onPressed: _saveToGallery,
-            icon: FaIcon(
-              _savedVideo ? FontAwesomeIcons.check : FontAwesomeIcons.download,
-              color: _savedVideo ? Colors.green : Colors.black,
+          if (!widget.isPicked)
+            IconButton(
+              onPressed: _saveToGallery,
+              icon: FaIcon(
+                _savedVideo
+                    ? FontAwesomeIcons.check
+                    : FontAwesomeIcons.download,
+                color: _savedVideo ? Colors.green : Colors.black,
+              ),
             ),
-          ),
         ],
       ),
       body: _videoPlayerController.value.isInitialized
