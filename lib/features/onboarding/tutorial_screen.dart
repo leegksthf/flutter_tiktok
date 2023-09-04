@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/main_navigation/main_navigation_screen.dart';
 import 'package:tiktok_clone/utils.dart';
 
 enum Direction { right, left }
@@ -45,10 +45,17 @@ class _TutorialScreenState extends State<TutorialScreen> {
   }
 
   void _onEnterAppTap() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const MainNavigationScreen()),
-        (route) => false);
+    context.go('/home');
+
+    // push란 데이터 등을 스택 위에 추가한다는 뜻. 따라서 뒤로가기 버튼을 통해 뒤로 갈 수 있음(pop 가능)
+    // go는 그냥 그 경로로 간다는 뜻. 기존 스택에 추가하는 게 아님. 경로가 바뀌어버리고, 스택을 교체하는 것.
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => const MainNavigationScreen(
+    //               tab: 'home',
+    //             )),
+    //     (route) => false);
   }
 
   @override
@@ -65,9 +72,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
               crossFadeState: _showingPage == Page.first
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
-              firstChild: Column(
+              firstChild: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Gaps.v80,
                     Text(
                       'Watch cool videos!',
@@ -80,9 +87,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                       style: TextStyle(fontSize: Sizes.size20),
                     )
                   ]),
-              secondChild: Column(
+              secondChild: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Gaps.v80,
                   Text(
                     'Follow the rules',

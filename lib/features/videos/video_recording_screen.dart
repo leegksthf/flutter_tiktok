@@ -12,6 +12,9 @@ import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_flash_button.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
+  static const String routeName = 'postVideo';
+  static const String routeURL = '/upload';
+
   const VideoRecordingScreen({super.key});
 
   @override
@@ -43,10 +46,11 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late final AnimationController _progressAnimationController =
       AnimationController(
-          vsync: this,
-          duration: const Duration(seconds: 10),
-          lowerBound: 0.0,
-          upperBound: 1.0);
+    vsync: this,
+    duration: const Duration(seconds: 10),
+    lowerBound: 0.0,
+    upperBound: 1.0,
+  );
 
   Future<void> initCamera() async {
     final cameras = await availableCameras();
@@ -57,6 +61,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
       cameras[_isSelfieMode ? 1 : 0],
       ResolutionPreset.ultraHigh,
       enableAudio: false,
+      imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
     await _cameraController.initialize();
@@ -99,6 +104,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
   }
 
   Future<void> _startRecording() async {
+    if (_noCamera) return;
     if (_cameraController.value.isRecordingVideo) return;
     await _cameraController.startVideoRecording();
     _buttonAnimationController.forward();
@@ -142,13 +148,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     if (!mounted) return;
 
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => VideoPreviewScreen(
-            video: video,
-            isPicked: true,
-          ),
-        ));
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPreviewScreen(
+          video: video,
+          isPicked: true,
+        ),
+      ),
+    );
   }
 
   Future<void> _zoomInOut(DragUpdateDetails details) async {
@@ -166,7 +173,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     } else {
       return;
     }
-    print(_zoomLevel);
 
     await _cameraController.setZoomLevel(_zoomLevel);
     setState(() {});
@@ -216,14 +222,18 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _progressAnimationController.dispose();
     _buttonAnimationController.dispose();
-    _cameraController.dispose();
+    if (!_noCamera) {
+      _cameraController.dispose();
+    }
     super.dispose();
   }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (_noCamera) return;
     // 아직 권한을 갖고있지 않을 때
     if (!_hasPermission) return;
     // 권한 창이 application의 앞에 나타나서(flutter는 application이 비활성화됐다고 생각함)
@@ -267,6 +277,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     CameraPreview(
                       _cameraController,
                     ),
+                  const Positioned(
+                    top: Sizes.size40,
+                    left: Sizes.size20,
+                    child: CloseButton(
+                      color: Colors.white,
+                    ),
+                  ),
                   if (!_noCamera)
                     Positioned(
                       top: Sizes.size40,

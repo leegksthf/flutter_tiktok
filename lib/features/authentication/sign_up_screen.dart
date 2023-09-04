@@ -15,11 +15,19 @@ class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   void _onLoginTap(BuildContext context) {
-    context.push(LoginScreen.routeName);
+    context.pushNamed(LoginScreen.routeName);
   }
 
   void _onEmailTap(BuildContext context) {
-    context.pushNamed(UsernameScreen.routeName);
+    // '/username'의 url로 보내지 않을거임. GoRouter 사용하면 기존 url뒤에 url이 추가가됨.
+    // context.pushNamed(UsernameScreen.routeName);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const UsernameScreen(),
+      ),
+    );
     //
     // 쿼리파라미터 사용
     // context.push('/user/lynn?show=likes');

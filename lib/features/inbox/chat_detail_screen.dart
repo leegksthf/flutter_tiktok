@@ -4,7 +4,15 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  const ChatDetailScreen({super.key});
+  static const String routeName = 'chatDetail';
+  // 자식 경로는 /로 시작할 수 없음.
+  static const String routeURL = ':chatId';
+
+  final String chatId;
+  const ChatDetailScreen({
+    super.key,
+    required this.chatId,
+  });
 
   @override
   State<ChatDetailScreen> createState() => _ChatDetailScreenState();
@@ -51,16 +59,16 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               ),
             )
           ]),
-          title: const Text(
-            '니꼬',
-            style: TextStyle(
+          title: Text(
+            '니꼬 (${widget.chatId})',
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
           ),
           subtitle: const Text('Active now'),
-          trailing: Row(
+          trailing: const Row(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               FaIcon(
                 FontAwesomeIcons.flag,
                 color: Colors.black,
@@ -151,14 +159,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                         // minLines: null,
                         maxLines: null,
                         textInputAction: TextInputAction.newline,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(
                             left: Sizes.size16,
                           ),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Send a message...',
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(
                                 Sizes.size20,
@@ -175,7 +183,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           suffixIcon: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children: [
                               FaIcon(
                                 FontAwesomeIcons.faceSmile,
                                 size: Sizes.size28,
