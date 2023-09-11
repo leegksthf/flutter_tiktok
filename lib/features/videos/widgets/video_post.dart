@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
@@ -26,6 +27,7 @@ class _VideoPostState extends State<VideoPost>
   // current tree가 활성화 될 때, 위젯이 화면에 보일 때만 tick하는 Ticker를 제공해줌.
   // 매 프레임마다 재생되어야하기때문에 Ticker가 필요함.
   // 여러 애니메이션 사용한다면 TickerProviderStateMixin 사용하면 됨.
+
   final _videoPlayerController =
       VideoPlayerController.asset('assets/videos/dami1.mp4');
 
@@ -169,6 +171,19 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            left: 20,
+            top: 40,
+            child: IconButton(
+              icon: FaIcon(
+                VideoConfig.of(context).autoMute
+                    ? FontAwesomeIcons.volumeOff
+                    : FontAwesomeIcons.volumeHigh,
+                color: Colors.white,
+              ),
+              onPressed: () {},
             ),
           ),
           const Positioned(
