@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktok_clone/common/theme_config/theme_config.dart';
 import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_inherited_widget_test.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/router.dart';
@@ -30,95 +33,105 @@ class TikTokApp extends StatelessWidget {
     // S.load(const Locale('en'));
     // flexColorScheme 패키지로 편하게 설정할 수 있음.
 
-    // VideoConfig가 업데이트되면 VideoConfigData도 재렌더링 일어나면서 업데이트됨.
-    return VideoConfig(
-      child: MaterialApp.router(
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'),
-          Locale('ko'),
-        ],
-        theme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.light,
-          // font와 color만 지정해주고, size나 weight등의 속성은 지정해주지 않음.
-          textTheme: Typography.blackMountainView,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          primaryColor: const Color(0xFFE9435A),
-          scaffoldBackgroundColor: Colors.white,
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color(0xFFE9435A),
-          ),
-          appBarTheme: const AppBarTheme(
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            elevation: 0,
-            titleTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: Sizes.size16 + Sizes.size2,
-              fontWeight: FontWeight.w600,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => VideoConfig(),
+        )
+      ],
+      child: AnimatedBuilder(
+        animation: darkModeConfig,
+        // VideoConfig가 업데이트되면 VideoConfigData도 재렌더링 일어나면서 업데이트됨.
+        builder: (context, child) => MaterialApp.router(
+          routerConfig: router,
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'),
+            Locale('ko'),
+          ],
+          // ThemeMode.system은 각 시스템 설정에 따름.
+          themeMode: darkModeConfig.value ? ThemeMode.dark : ThemeMode.light,
+          theme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.light,
+            // font와 color만 지정해주고, size나 weight등의 속성은 지정해주지 않음.
+            textTheme: Typography.blackMountainView,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            primaryColor: const Color(0xFFE9435A),
+            scaffoldBackgroundColor: Colors.white,
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Color(0xFFE9435A),
             ),
-          ),
+            appBarTheme: const AppBarTheme(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              elevation: 0,
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: Sizes.size16 + Sizes.size2,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
 
-          tabBarTheme: TabBarTheme(
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey.shade500,
-            indicatorColor: Colors.black,
+            tabBarTheme: TabBarTheme(
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.grey.shade500,
+              indicatorColor: Colors.black,
+            ),
+            listTileTheme: const ListTileThemeData(
+              iconColor: Colors.black,
+            ),
+            // icon마다 색 지정해주지 말고 iconTheme으로 한꺼번에 지정해주면 됨.
           ),
-          listTileTheme: const ListTileThemeData(
-            iconColor: Colors.black,
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            textTheme: Typography.whiteMountainView,
+            // GoogleFonts.notoSansTextTheme(
+            //   ThemeData(brightness: Brightness.dark).textTheme,
+            // ),
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: Colors.black,
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Color(0xFFE9435A),
+            ),
+            appBarTheme: AppBarTheme(
+              surfaceTintColor: Colors.grey.shade900,
+              backgroundColor: Colors.grey.shade900,
+              titleTextStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: Sizes.size16 + Sizes.size2,
+                fontWeight: FontWeight.w600,
+              ),
+              actionsIconTheme: IconThemeData(
+                color: Colors.grey.shade100,
+              ),
+              iconTheme: IconThemeData(
+                color: Colors.grey.shade100,
+              ),
+            ),
+            bottomAppBarTheme: BottomAppBarTheme(
+              color: Colors.grey.shade900,
+            ),
+            primaryColor: const Color(
+              0xFFE9435A,
+            ),
+            tabBarTheme: TabBarTheme(
+              labelColor: Colors.white,
+              indicatorColor: Colors.white,
+              unselectedLabelColor: Colors.grey.shade700,
+            ),
           ),
-          // icon마다 색 지정해주지 말고 iconTheme으로 한꺼번에 지정해주면 됨.
+          // home: const SignUpScreen(),
         ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          textTheme: Typography.whiteMountainView,
-          // GoogleFonts.notoSansTextTheme(
-          //   ThemeData(brightness: Brightness.dark).textTheme,
-          // ),
-          brightness: Brightness.dark,
-          scaffoldBackgroundColor: Colors.black,
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color(0xFFE9435A),
-          ),
-          appBarTheme: AppBarTheme(
-            surfaceTintColor: Colors.grey.shade900,
-            backgroundColor: Colors.grey.shade900,
-            titleTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: Sizes.size16 + Sizes.size2,
-              fontWeight: FontWeight.w600,
-            ),
-            actionsIconTheme: IconThemeData(
-              color: Colors.grey.shade100,
-            ),
-            iconTheme: IconThemeData(
-              color: Colors.grey.shade100,
-            ),
-          ),
-          bottomAppBarTheme: BottomAppBarTheme(
-            color: Colors.grey.shade900,
-          ),
-          primaryColor: const Color(
-            0xFFE9435A,
-          ),
-          tabBarTheme: TabBarTheme(
-            labelColor: Colors.white,
-            indicatorColor: Colors.white,
-            unselectedLabelColor: Colors.grey.shade700,
-          ),
-        ),
-        // home: const SignUpScreen(),
       ),
     );
   }

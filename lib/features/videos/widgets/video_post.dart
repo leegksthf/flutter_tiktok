@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_inherited_widget_test.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
@@ -69,6 +71,14 @@ class _VideoPostState extends State<VideoPost>
       lowerBound: 1.0,
       upperBound: 1.5,
     );
+
+    // ChangeNotifier 사용
+    // videoConfig.addListener(() {
+    //   setState(() {
+    //     // _autoMute = videoConfig.autoMute;
+    //     _autoMute = videoConfig.value;
+    //   });
+    // });
   }
 
   @override
@@ -118,12 +128,11 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onToggleMutedButton() {
-    _isMuted = !_isMuted;
-    if (_isMuted) {
-      _videoPlayerController.setVolume(1.0);
-    } else {
-      _videoPlayerController.setVolume(0.0);
-    }
+    // if (_autoMute) {
+    //   _videoPlayerController.setVolume(1.0);
+    // } else {
+    //   _videoPlayerController.setVolume(0.0);
+    // }
   }
 
   @override
@@ -177,14 +186,23 @@ class _VideoPostState extends State<VideoPost>
             left: 20,
             top: 40,
             child: IconButton(
-              icon: FaIcon(
-                VideoConfigData.of(context).autoMute
-                    ? FontAwesomeIcons.volumeOff
-                    : FontAwesomeIcons.volumeHigh,
-                color: Colors.white,
-              ),
-              onPressed: VideoConfigData.of(context).toggleMuted,
-            ),
+                icon: FaIcon(
+                  context.watch<VideoConfig>().isMuted
+                      ? FontAwesomeIcons.volumeOff
+                      : FontAwesomeIcons.volumeHigh,
+                  // VideoConfigData.of(context).autoMute
+                  //     ? FontAwesomeIcons.volumeOff
+                  //     : FontAwesomeIcons.volumeHigh,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  _onToggleMutedButton();
+                  context.read<VideoConfig>().toggleIsMuted();
+                  // videoConfig.toggleAutoMute(); => InheritedWidget
+                  // videoConfig.value = !videoConfig.value => ValueNotifier;
+                }
+                // VideoConfigData.of(context).toggleMuted,
+                ),
           ),
           const Positioned(
             bottom: 20,
@@ -216,20 +234,6 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
-                IconButton(
-                  onPressed: _onToggleMutedButton,
-                  icon: _isMuted
-                      ? const FaIcon(
-                          FontAwesomeIcons.earListen,
-                          color: Colors.white,
-                          size: Sizes.size40,
-                        )
-                      : const FaIcon(
-                          FontAwesomeIcons.earDeaf,
-                          color: Colors.white,
-                          size: Sizes.size40,
-                        ),
-                ),
                 Gaps.v24,
                 const CircleAvatar(
                   radius: 25,

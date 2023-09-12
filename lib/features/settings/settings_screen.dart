@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktok_clone/common/theme_config/theme_config.dart';
 import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
+import 'package:tiktok_clone/common/widgets/video_config/video_config_inherited_widget_test.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -52,14 +55,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           child: ListView(
             children: [
+              // 애니메이션 뿐만 아니라 값 변경 알림에도 사용되기때문에 changeNotifier, valueNotifier와 함께 사용.
+              // 필요한 부분만 rebuild되기때문에 성능에 좋음.
+              // ValueListenableBuilder 사용해도 됨.
+              AnimatedBuilder(
+                animation: darkModeConfig,
+                builder: (context, child) => SwitchListTile.adaptive(
+                  value: darkModeConfig.value,
+                  onChanged: (value) {
+                    darkModeConfig.value = !darkModeConfig.value;
+                  },
+                  title: const Text('DarkMode'),
+                  subtitle: const Text('apply dark mode.'),
+                ),
+              ),
               SwitchListTile.adaptive(
-                value: VideoConfigData.of(context).autoMute,
-                onChanged: (value) {
-                  VideoConfigData.of(context).toggleMuted();
-                },
+                // watch는 변경된 위젯을 rebuild하고 read로 메소드를 접근.
+                value: context.watch<VideoConfig>().isMuted,
+                onChanged: (value) =>
+                    context.read<VideoConfig>().toggleIsMuted(),
                 title: const Text('Auto Mute'),
                 subtitle: const Text("Videos will be muted by default."),
               ),
+
+              // SwitchListTile.adaptive(
+              //   value: VideoConfigData.of(context).autoMute,
+              //   onChanged: (value) {
+              //     VideoConfigData.of(context).toggleMuted();
+              //   },
+              //   title: const Text('Auto Mute using Inherited Widget'),
+              //   subtitle: const Text("Videos will be muted by default."),
+              // ),
+
               // adaptive: 어느 환경에서 실행하고있는지 판단해서 그에 맞게 서로 다른 UI를 보여줌.
               SwitchListTile.adaptive(
                 value: _notifications,
