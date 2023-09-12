@@ -29,6 +29,8 @@ class TikTokApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // S.load(const Locale('en'));
     // flexColorScheme 패키지로 편하게 설정할 수 있음.
+
+    // VideoConfig가 업데이트되면 VideoConfigData도 재렌더링 일어나면서 업데이트됨.
     return VideoConfig(
       child: MaterialApp.router(
         routerConfig: router,
