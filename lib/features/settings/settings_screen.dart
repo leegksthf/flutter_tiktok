@@ -8,6 +8,7 @@ import 'package:tiktok_clone/common/theme_config/theme_config.dart';
 import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
 import 'package:tiktok_clone/common/widgets/video_config/video_config_inherited_widget_test.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -58,32 +59,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // 애니메이션 뿐만 아니라 값 변경 알림에도 사용되기때문에 changeNotifier, valueNotifier와 함께 사용.
               // 필요한 부분만 rebuild되기때문에 성능에 좋음.
               // ValueListenableBuilder 사용해도 됨.
-              AnimatedBuilder(
-                animation: darkModeConfig,
-                builder: (context, child) => SwitchListTile.adaptive(
-                  value: darkModeConfig.value,
-                  onChanged: (value) {
-                    darkModeConfig.value = !darkModeConfig.value;
-                  },
-                  title: const Text('DarkMode'),
-                  subtitle: const Text('apply dark mode.'),
-                ),
+              // AnimatedBuilder(
+              //   animation: darkModeConfig,
+              //   builder: (context, child) => SwitchListTile.adaptive(
+              //     value: darkModeConfig.value,
+              //     onChanged: (value) {
+              //       darkModeConfig.value = !darkModeConfig.value;
+              //     },
+              //     title: const Text('DarkMode'),
+              //     subtitle: const Text('apply dark mode.'),
+              //   ),
+              // ),
+              SwitchListTile.adaptive(
+                value: context.watch<PlaybackConfigViewModel>().darkmode,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setDarkMode(value),
+                title: const Text('DarkMode'),
+                subtitle: const Text('apply dark mode.'),
               ),
               SwitchListTile.adaptive(
-                // watch는 변경된 위젯을 rebuild하고 read로 메소드를 접근.
-                value: context.watch<VideoConfig>().isMuted,
+                value: context.watch<PlaybackConfigViewModel>().muted,
                 onChanged: (value) =>
-                    context.read<VideoConfig>().toggleIsMuted(),
-                title: const Text('Auto Mute'),
-                subtitle: const Text("Videos will be muted by default."),
+                    context.read<PlaybackConfigViewModel>().setMuted(value),
+                title: const Text('Mute video'),
+                subtitle: const Text('Video will be muted by default.'),
               ),
-
+              SwitchListTile.adaptive(
+                value: context.watch<PlaybackConfigViewModel>().autoplay,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setAutoplay(value),
+                title: const Text('Autoplay'),
+                subtitle: const Text('Video will start playing automatically'),
+              ),
               // SwitchListTile.adaptive(
-              //   value: VideoConfigData.of(context).autoMute,
-              //   onChanged: (value) {
-              //     VideoConfigData.of(context).toggleMuted();
-              //   },
-              //   title: const Text('Auto Mute using Inherited Widget'),
+              // watch는 변하는 프로퍼티의 값을 알고 싶을 때 사용하고, read는 변하지 않는 것을 한 번만 읽고싶을 때 사용함.
+              //   value: context.watch<VideoConfig>().isMuted,
+              //   onChanged: (value) =>
+              //       context.read<VideoConfig>().toggleIsMuted(),
+              //   title: const Text('Auto Mute'),
               //   subtitle: const Text("Videos will be muted by default."),
               // ),
 
