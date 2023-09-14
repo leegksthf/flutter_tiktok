@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config.dart';
-import 'package:tiktok_clone/common/widgets/video_config/video_config_inherited_widget_test.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
@@ -13,7 +10,7 @@ import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VideoPost extends StatefulWidget {
+class VideoPost extends ConsumerStatefulWidget {
   const VideoPost(
       {super.key, required this.onVideoFinished, required this.index});
 
@@ -21,10 +18,11 @@ class VideoPost extends StatefulWidget {
   final int index;
 
   @override
-  State<VideoPost> createState() => _VideoPostState();
+  // State<VideoPost> createState() => _VideoPostState();
+  VideoPostState createState() => VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost>
+class VideoPostState extends ConsumerState<VideoPost>
     with SingleTickerProviderStateMixin {
   // with + Mixin은 그 클래스를 복사함. 클래스의 메서드와 속성 전부 가져옴.
   // current tree가 활성화 될 때, 위젯이 화면에 보일 때만 tick하는 Ticker를 제공해줌.
@@ -32,12 +30,12 @@ class _VideoPostState extends State<VideoPost>
   // 여러 애니메이션 사용한다면 TickerProviderStateMixin 사용하면 됨.
 
   final _videoPlayerController =
-      VideoPlayerController.asset('assets/videos/dami1.mp4');
+      VideoPlayerController.asset('assets/videos/dami2.mp4');
 
   late final AnimationController _animationController;
 
   bool _isPaused = false;
-  bool _isMuted = false;
+  late bool _isMuted = ref.read(playbackConfigProvider).muted;
   final _animationDuration = const Duration(milliseconds: 200);
 
   void _onVideoChange() {
@@ -52,10 +50,10 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
-    if (kIsWeb) {
-      _isMuted = true;
-      await _videoPlayerController.setVolume(0);
-    }
+    // if (kIsWeb) {
+    // _isMuted = true;
+    // await _videoPlayerController.setVolume(0);
+    // }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
   }
@@ -82,9 +80,11 @@ class _VideoPostState extends State<VideoPost>
     // });
 
     // 이미 dispose가 된 영상도 listen하고있기 때문에 mounted가 되지 않았다면 return시켜줌.
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onPlaybackConfigChanged);
+    // context
+    //     .read<PlaybackConfigViewModel>()
+    //     .addListener(_onPlaybackConfigChanged);
+
+    _onPlaybackConfigChanged();
   }
 
   @override
@@ -95,8 +95,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _onPlaybackConfigChanged() {
     if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
-    if (muted) {
+    if (_isMuted) {
       _videoPlayerController.setVolume(0);
     } else {
       _videoPlayerController.setVolume(1);
@@ -108,8 +107,7 @@ class _VideoPostState extends State<VideoPost>
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      final autoplay = context.read<PlaybackConfigViewModel>().autoplay;
-      if (autoplay) {
+      if (ref.read(playbackConfigProvider).autoplay) {
         _videoPlayerController.play();
       }
     }
@@ -198,7 +196,7 @@ class _VideoPostState extends State<VideoPost>
             top: 40,
             child: IconButton(
                 icon: FaIcon(
-                  context.watch<PlaybackConfigViewModel>().muted
+                  _isMuted
                       ? FontAwesomeIcons.volumeOff
                       : FontAwesomeIcons.volumeHigh,
                   // VideoConfigData.of(context).autoMute
@@ -207,10 +205,13 @@ class _VideoPostState extends State<VideoPost>
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  _onPlaybackConfigChanged();
-                  context
-                      .read<PlaybackConfigViewModel>()
-                      .setMuted(!context.read<PlaybackConfigViewModel>().muted);
+                  _isMuted = !_isMuted;
+                  setState(() {});
+                  _videoPlayerController.setVolume(_isMuted ? 0 : 1);
+                  // context
+                  //     .read<PlaybackConfigViewModel>()
+                  //     .setMuted(!context.read<PlaybackConfigViewModel>().muted);
+
                   // videoConfig.toggleAutoMute(); => InheritedWidget
                   // videoConfig.value = !videoConfig.value => ValueNotifier;
                 }
@@ -233,7 +234,7 @@ class _VideoPostState extends State<VideoPost>
                 ),
                 Gaps.v10,
                 Text(
-                  'This is my cat!!!',
+                  'she is my cat!!!',
                   style: TextStyle(
                     fontSize: Sizes.size16,
                     color: Colors.white,

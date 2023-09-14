@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/theme_config/theme_config.dart';
@@ -10,25 +11,13 @@ import 'package:tiktok_clone/common/widgets/video_config/video_config_inherited_
 import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notifications = false;
-
-  void _onNotificationsChanged(bool? newValue) {
-    if (newValue == null) return;
-    setState(() {
-      _notifications = newValue;
-    });
-  }
+  final bool _notifications = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: PreferredSize(
@@ -71,23 +60,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //   ),
               // ),
               SwitchListTile.adaptive(
-                value: context.watch<PlaybackConfigViewModel>().darkmode,
-                onChanged: (value) =>
-                    context.read<PlaybackConfigViewModel>().setDarkMode(value),
+                value: ref.watch(playbackConfigProvider).darkmode,
+                onChanged: (value) => {
+                  ref.read(playbackConfigProvider.notifier).setDarkMode(value)
+                },
                 title: const Text('DarkMode'),
                 subtitle: const Text('apply dark mode.'),
               ),
               SwitchListTile.adaptive(
-                value: context.watch<PlaybackConfigViewModel>().muted,
+                value: ref.watch(playbackConfigProvider).muted,
                 onChanged: (value) =>
-                    context.read<PlaybackConfigViewModel>().setMuted(value),
+                    {ref.read(playbackConfigProvider.notifier).setMuted(value)},
                 title: const Text('Mute video'),
                 subtitle: const Text('Video will be muted by default.'),
               ),
               SwitchListTile.adaptive(
-                value: context.watch<PlaybackConfigViewModel>().autoplay,
-                onChanged: (value) =>
-                    context.read<PlaybackConfigViewModel>().setAutoplay(value),
+                value: ref.watch(playbackConfigProvider).autoplay,
+                onChanged: (value) => {
+                  ref.read(playbackConfigProvider.notifier).setAutoplay(value)
+                },
                 title: const Text('Autoplay'),
                 subtitle: const Text('Video will start playing automatically'),
               ),
@@ -102,33 +93,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               // adaptive: 어느 환경에서 실행하고있는지 판단해서 그에 맞게 서로 다른 UI를 보여줌.
               SwitchListTile.adaptive(
-                value: _notifications,
-                onChanged: _onNotificationsChanged,
+                value: false,
+                onChanged: (value) {},
                 title: const Text("Enable notifications"),
                 subtitle: const Text("They will be cute."),
               ),
               CheckboxListTile(
                 activeColor: Colors.black,
-                value: _notifications,
-                onChanged: _onNotificationsChanged,
+                value: false,
+                onChanged: (value) {},
                 title: const Text("Marketing emails"),
                 subtitle: const Text("We won't spam you."),
               ),
               ListTile(
                 onTap: () async {
-                  if (!mounted) return;
                   final date = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1980),
                     lastDate: DateTime(2030),
                   );
-                  if (!mounted) return;
+
                   final time = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
                   );
-                  if (!mounted) return;
+
                   final booking = await showDateRangePicker(
                     context: context,
                     firstDate: DateTime(1980),
